@@ -1,12 +1,15 @@
 package ba.lukic.petar.eknjiznica.di.module;
 
 import ba.lukic.petar.eknjiznica.di.ActivityScoped;
+import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity;
 import ba.lukic.petar.eknjiznica.ui.SplashScreen;
+import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsModule;
 import ba.lukic.petar.eknjiznica.ui.home.HomeActivity;
 import ba.lukic.petar.eknjiznica.ui.login.LoginActivity;
 import ba.lukic.petar.eknjiznica.ui.login.LoginModule;
 import ba.lukic.petar.eknjiznica.ui.profile.ProfileActivity;
 import ba.lukic.petar.eknjiznica.ui.profile.ProfileModule;
+import ba.lukic.petar.eknjiznica.ui.recommended.RecommendedModule;
 import ba.lukic.petar.eknjiznica.ui.register.RegisterActivity;
 import ba.lukic.petar.eknjiznica.ui.register.RegisterModule;
 import dagger.Module;
@@ -31,12 +34,16 @@ public abstract class ActivityBindingModule {
 
 
     @ActivityScoped
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = {RecommendedModule.class})
     abstract HomeActivity homeActivity();
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = ProfileModule.class)
     abstract ProfileActivity profileActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = BookDetailsModule.class)
+    abstract BookDetailsActivity BookDetailsActivity();
 
 
 

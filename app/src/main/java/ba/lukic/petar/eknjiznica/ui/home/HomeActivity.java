@@ -21,12 +21,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerAuthorizedActivity;
 import ba.lukic.petar.eknjiznica.data.account.IAccountRepo;
 import ba.lukic.petar.eknjiznica.ui.profile.ProfileActivity;
+import ba.lukic.petar.eknjiznica.ui.recommended.RecommendedBooksFragment;
 import ba.lukic.petar.eknjiznica.util.ISchedulersProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +81,9 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
         supportActionBar.setDisplayHomeAsUpEnabled(true);
         supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        List<Fragment> fragments = Arrays.asList(RecommendedBooksFragment.newInstance(),PlaceholderFragment.newInstance(2),PlaceholderFragment.newInstance(3));
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),fragments);
 
         // Set up the ViewPager with the sections adapter.
         container.setAdapter(mSectionsPagerAdapter);
@@ -166,21 +173,23 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        List<Fragment> fragments;
+        public SectionsPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
+            this.fragments = fragments;
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return fragments.get(position);
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return fragments.size();
         }
     }
 }

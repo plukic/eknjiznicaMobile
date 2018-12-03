@@ -1,6 +1,9 @@
 package ba.lukic.petar.eknjiznica.data.api;
 
 
+import java.util.List;
+
+import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import ba.lukic.petar.eknjiznica.model.login.AuthenticationResponse;
 import ba.lukic.petar.eknjiznica.model.user.ClientAddVM;
 import ba.lukic.petar.eknjiznica.model.user.ClientUpdateVM;
@@ -36,5 +39,8 @@ public interface IApiService {
 
     @PUT("api/clients/profile")
     Completable updateUser(@Body ClientUpdateVM clientUpdateVM);
-
+    @GET("api/books/recommended")
+    Observable<List<BookOfferVM>> GetRecommendedBooks();
+    @GET("api/books/topselling")
+    Observable<List<BookOfferVM>> GetTopSellingBooks();
 }

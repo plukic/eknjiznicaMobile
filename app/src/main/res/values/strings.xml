@@ -34,7 +34,22 @@
     <string name="nav_profile">Profil</string>
     <string name="nav_logout">Odjavi se</string>
     <string name="empty_placeholder">N/A</string>
-    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_profile">Moj profil</string>
     <string name="label_account_balance">Stanje računa</string>
     <string name="profile_update_success">Uspješno ste izmijenili Vaš profil.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="top_selling">Najprodavanije</string>
+    <string name="top_readed">Najčitanije</string>
+    <string name="no_recommended_books">Nema preporučenih knjiga.</string>
+    <string name="no_top_selling_books">Nema najprodavanijih knjiga.</string>
+    <string name="title_activity_book_details">Detalji knjige</string>
+    <string name="book_price">Cijena: </string>
+    <string name="book_description">Opis:</string>
+    <string name="demo_description">Ratovi i raspad stare Jugoslavije označili su početak novog, burnog i strašnog vremena. Novi idoli mladih postali su ratni profiteri, a karijere folk pevačica primeri životnog uspeha. Kriminal je u Srbiji postao uvaženo zanimanje. Nisam nimalo ponosna na svoj život i ne predlažem nikome na ovom svetu da mu budem uzor. Ipak moram da kažem da nisam nezadovoljna. Za svojih četrdeset pet godina života pretrpela sam mnogo manju kaznu nego većina mojih vršnjaka koji su inženjeri, arhitekte, radnici…</string>
+    <string name="undo">Poništi</string>
+    <string name="book_favorite_added">%s je uspješno dodan u favorite</string>
+    <string name="book_favorite_removed">%s je uspješno uklonjen iz favorita</string>
+    <string name="menu_favorite">Favoriti</string>
 </resources>

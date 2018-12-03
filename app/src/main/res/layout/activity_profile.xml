@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,14 +8,12 @@
     tools:context="ba.lukic.petar.eknjiznica.ui.profile.ProfileActivity">
 
 
-
-
     <android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
 
@@ -25,27 +23,10 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Title" />
+            app:title="@string/title_activity_profile" />
 
 
     </android.support.design.widget.AppBarLayout>
-
-
-    <ImageView
-        android:id="@+id/profile_image"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/app_bar_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
-        app:srcCompat="@drawable/ic_man" />
-
 
 
     <android.support.design.widget.FloatingActionButton
@@ -56,26 +37,32 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|right|end"
-        app:layout_constraintBottom_toBottomOf="@+id/app_bar_layout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_anchor="@+id/nestedScrollView"
+        app:layout_anchorGravity="right|top"
         app:srcCompat="@drawable/ic_edit_black_24dp" />
 
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/profile_image">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/ic_man" />
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_firstname"
@@ -130,15 +117,14 @@
                     android:id="@+id/ed_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="@string/label_username"
                     android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:enabled="false"
                     android:textColor="?android:textColorPrimary"
                     android:textColorHint="?android:textColorSecondary"
                     tools:text="@string/label_username" />
             </android.support.design.widget.TextInputLayout>
-
 
 
             <android.support.design.widget.TextInputLayout
@@ -188,14 +174,14 @@
                     android:id="@+id/ed_account_balance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:hint="@string/label_account_balance"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
-                    android:enabled="false"
-                    tools:text="800.54KM"
                     android:textColor="?android:textColorPrimary"
-                    android:textColorHint="?android:textColorSecondary" />
+                    android:textColorHint="?android:textColorSecondary"
+                    tools:text="800.54KM" />
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>

@@ -5,11 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,14 +39,17 @@ public class ProfileActivity extends BaseDaggerAuthorizedActivity implements Pro
     DialogFactory dialogFactory;
     @Inject
     IAccountRepo accountRepo;
+
+    @Inject
+    ProfileContract.Presenter presenter;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.app_bar_layout)
     AppBarLayout appBarLayout;
-    @BindView(R.id.profile_image)
-    ImageView profileImage;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.profile_image)
+    ImageView profileImage;
     @BindView(R.id.ed_firstname)
     EditText edFirstname;
     @BindView(R.id.til_firstname)
@@ -70,12 +74,11 @@ public class ProfileActivity extends BaseDaggerAuthorizedActivity implements Pro
     EditText edAccountBalance;
     @BindView(R.id.til_account_balance)
     TextInputLayout tilAccountBalance;
-
-
-    @Inject
-    ProfileContract.Presenter presenter;
+    @BindView(R.id.nestedScrollView)
+    NestedScrollView nestedScrollView;
     @BindView(R.id.parent)
-    ConstraintLayout parent;
+    CoordinatorLayout parent;
+
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private ProgressDialog progressDialog;
@@ -161,12 +164,12 @@ public class ProfileActivity extends BaseDaggerAuthorizedActivity implements Pro
     }
 
     @OnClick(R.id.fab)
-    public void onUpdateProfile(){
+    public void onUpdateProfile() {
         String firstName = edFirstname.getText().toString();
         String lastName = edLastName.getText().toString();
         String phoneNumber = edPhoneNumber.getText().toString();
         String email = edEmail.getText().toString();
-        presenter.updateUser(firstName, lastName, email,  phoneNumber);
+        presenter.updateUser(firstName, lastName, email, phoneNumber);
 
     }
 

@@ -1,7 +1,11 @@
 package ba.lukic.petar.eknjiznica.data.shared_prefs;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import ba.lukic.petar.eknjiznica.model.login.AuthenticationResponse;
@@ -13,6 +17,7 @@ public class SharedPrefsRepo {
     private static final String KEY_AUTHENTICATION_RESPONSE = "KEY_AUTHENTICATION_RESPONSE";
     private static final String KEY_CLIENT_PROFILE_INFO = "KEY_CLIENT_PROFILE_INFO";
     private static final String KEY_UNIQUE_ID = "KEY_UNIQUE_ID";
+    private static final String KEY_FAVORITE_BOOKS = "KEY_FAVORITE_BOOKS";
     private SharedPreferenceHelper helper;
     private Gson gson;
 
@@ -62,5 +67,20 @@ public class SharedPrefsRepo {
             helper.setSharedPreferenceString(KEY_UNIQUE_ID, uniqueId);
         }
         return uniqueId;
+    }
+
+    public List<Integer> getFavoriteBooks() {
+        String json = helper.getSharedPreferenceString(KEY_FAVORITE_BOOKS, "");
+        Type listType = new TypeToken<ArrayList<Integer>>() {
+        }.getType();
+        List<Integer> yourClassList = new Gson().fromJson(json, listType);
+        if (yourClassList == null)
+            yourClassList = new ArrayList<>();
+        return yourClassList;
+    }
+
+    public void saveFavoriteBooks(List<Integer> bookId) {
+        String json = gson.toJson(bookId);
+        helper.setSharedPreferenceString(KEY_FAVORITE_BOOKS, json);
     }
 }

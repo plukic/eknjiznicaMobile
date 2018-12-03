@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/parent"
+    android:layout_height="match_parent"
+    tools:context="ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity">
+
+    <include layout="@layout/app_bar_layout"></include>
+
+
+        <include layout="@layout/content_book_details" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_shopping_cart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_shopping_cart_black_24dp" />
+
+</android.support.design.widget.CoordinatorLayout>
