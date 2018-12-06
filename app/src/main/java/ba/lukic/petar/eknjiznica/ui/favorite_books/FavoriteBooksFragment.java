@@ -34,12 +34,15 @@ import dagger.android.support.DaggerFragment;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoriteBooksFragment extends DaggerFragment implements FavoriteBooksContract.View ,BooksAdapter.IBooksCallback{
+public class FavoriteBooksFragment extends DaggerFragment implements FavoriteBooksContract.View, BooksAdapter.IBooksCallback {
 
 
-    public static FavoriteBooksFragment GetInstance(){
+    View parent;
+
+    public static FavoriteBooksFragment GetInstance() {
         return new FavoriteBooksFragment();
     }
+
     @Inject
     FavoriteBooksContract.Presenter presenter;
     @BindView(R.id.rv_book)
@@ -47,12 +50,12 @@ public class FavoriteBooksFragment extends DaggerFragment implements FavoriteBoo
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
     Unbinder unbinder;
-    private View parent;
     @Inject
     DateAndTimeUtil dateAndTimeUtil;
     @Inject
     EventBus eventBus;
-private BooksAdapter booksAdapter;
+    private BooksAdapter booksAdapter;
+
     public FavoriteBooksFragment() {
         // Required empty public constructor
     }
@@ -65,15 +68,16 @@ private BooksAdapter booksAdapter;
         parent = inflater.inflate(R.layout.fragment_favorite_books, container, false);
         unbinder = ButterKnife.bind(this, parent);
 
-        booksAdapter=new BooksAdapter(Glide.with(this),dateAndTimeUtil,this,presenter);
+        booksAdapter = new BooksAdapter(Glide.with(this), dateAndTimeUtil, this, presenter, getResources());
         rvBook.setLayoutManager(new LinearLayoutManager(getContext()));
         rvBook.setAdapter(booksAdapter);
-        eventBus.register(this);
 
         presenter.takeView(this);
         presenter.onStart();
         presenter.loadFavoriteBooks();
         swipeRefresh.setOnRefreshListener(() -> presenter.loadFavoriteBooks());
+        eventBus.register(this);
+
         return parent;
     }
 
@@ -89,7 +93,7 @@ private BooksAdapter booksAdapter;
     @Override
     public void displayNoFavoriteBooks() {
         rvBook.setVisibility(View.GONE);
-        Snackbar.make(parent, R.string.no_favorite_books, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_favorite_books, Snackbar.LENGTH_LONG).show();
 
     }
 
@@ -101,7 +105,7 @@ private BooksAdapter booksAdapter;
 
     @Override
     public void displayUnexpectedError() {
-        Snackbar.make(parent, R.string.msg_unexpected_error, Snackbar.LENGTH_LONG).show();
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.msg_unexpected_error, Snackbar.LENGTH_LONG).show();
 
     }
 
@@ -119,16 +123,16 @@ private BooksAdapter booksAdapter;
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(FavoriteBookToggleEvent bookOfferVM) {
         presenter.loadFavoriteBooks();
-        if(!bookOfferVM.displayNotification)
+        if (!bookOfferVM.displayNotification)
             return;
 
         boolean isFavorite = presenter.isInFavorite(bookOfferVM.data);
 
         Snackbar make;
         if (isFavorite) {
-            make = Snackbar.make(parent, String.format(getString(R.string.book_favorite_added), bookOfferVM.data.Title), Snackbar.LENGTH_LONG);
+            make = Snackbar.make(getActivity().findViewById(android.R.id.content), String.format(getString(R.string.book_favorite_added), bookOfferVM.data.Title), Snackbar.LENGTH_LONG);
         } else {
-            make = Snackbar.make(parent, String.format(getString(R.string.book_favorite_removed), bookOfferVM.data.Title), Snackbar.LENGTH_LONG);
+            make = Snackbar.make(getActivity().findViewById(android.R.id.content), String.format(getString(R.string.book_favorite_removed), bookOfferVM.data.Title), Snackbar.LENGTH_LONG);
         }
         make.setAction(R.string.undo, view -> {
             presenter.onFavoriteToggle(bookOfferVM.data);

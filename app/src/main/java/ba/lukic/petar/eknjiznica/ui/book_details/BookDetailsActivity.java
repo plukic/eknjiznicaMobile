@@ -25,6 +25,7 @@ import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements BookDetailsContract.View {
@@ -87,6 +88,11 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
         presenter.takeView(this);
     }
 
+    @OnClick(R.id.fab_shopping_cart)
+    public void onShoppingCart(){
+        presenter.addBookToBasket(book);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -100,8 +106,7 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
             finish();
             return true;
         } else if (itemId == R.id.menu_favorite) {
-            presenter.toggleFavorite(book);
-            eventBus.post(new FavoriteBookToggleEvent(book, false));
+            presenter.onFavoriteToggle(book,false);
             invalidateOptionsMenu();
         }
         return super.onOptionsItemSelected(item);
@@ -121,7 +126,7 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
         MenuItem settingsItem = menu.findItem(R.id.menu_favorite);
         // set your desired icon here based on a flag if you like
 
-        boolean inFavorite = presenter.isInFavorite(book.BookId);
+        boolean inFavorite = presenter.isInFavorite(book);
         if (inFavorite) {
             settingsItem.setIcon(getResources().getDrawable(R.drawable.ic_favorite_black_24dp));
         } else {
@@ -142,8 +147,14 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
             make = Snackbar.make(parent, String.format(getString(R.string.book_favorite_removed), book.Title), Snackbar.LENGTH_LONG);
         }
         make.setAction(R.string.undo, view -> {
-            presenter.toggleFavorite(book);
+            presenter.onFavoriteToggle(book,false);
         });
         make.show();
+    }
+
+    @Override
+    public void displayBookAddedToBasket() {
+        Snackbar.make(parent,getString(R.string.book_added_to_basket), Snackbar.LENGTH_LONG).show();
+
     }
 }

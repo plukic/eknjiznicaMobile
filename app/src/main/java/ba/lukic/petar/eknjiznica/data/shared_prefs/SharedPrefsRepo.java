@@ -19,6 +19,7 @@ public class SharedPrefsRepo {
     private static final String KEY_CLIENT_PROFILE_INFO = "KEY_CLIENT_PROFILE_INFO";
     private static final String KEY_UNIQUE_ID = "KEY_UNIQUE_ID";
     private static final String KEY_FAVORITE_BOOKS = "KEY_FAVORITE_BOOKS";
+    private static final String KEY_BASKET_BOOKS = "KEY_BASKET_BOOKS";
     private SharedPreferenceHelper helper;
     private Gson gson;
 
@@ -71,13 +72,34 @@ public class SharedPrefsRepo {
     }
 
     public List<BookOfferVM> getFavoriteBooks() {
-        String json = helper.getSharedPreferenceString(KEY_FAVORITE_BOOKS, "");
-        Type listType = new TypeToken<ArrayList<Integer>>() {
-        }.getType();
-        List<BookOfferVM> yourClassList = new Gson().fromJson(json, listType);
-        if (yourClassList == null)
-            yourClassList = new ArrayList<>();
-        return yourClassList;
+        try{
+            String json = helper.getSharedPreferenceString(KEY_BASKET_BOOKS, "");
+            Type listType = new TypeToken<ArrayList<BookOfferVM>>() {}.getType();
+            List<BookOfferVM> yourClassList = gson.fromJson(json, listType);
+            if (yourClassList == null)
+                yourClassList = new ArrayList<>();
+            return yourClassList;
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
+    }
+
+    public void saveBasketBooks(List<BookOfferVM> bookId) {
+        String json = gson.toJson(bookId);
+        helper.setSharedPreferenceString(KEY_FAVORITE_BOOKS, json);
+    }
+
+    public List<BookOfferVM> getBasketBooks() {
+        try{
+            String json = helper.getSharedPreferenceString(KEY_BASKET_BOOKS, "");
+            Type listType = new TypeToken<ArrayList<BookOfferVM>>() {}.getType();
+            List<BookOfferVM> yourClassList = gson.fromJson(json, listType);
+            if (yourClassList == null)
+                yourClassList = new ArrayList<>();
+            return yourClassList;
+        }catch (Exception e){
+            return new ArrayList<>();
+        }
     }
 
     public void saveFavoriteBooks(List<BookOfferVM> bookId) {

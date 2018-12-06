@@ -50,8 +50,6 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
     TabLayout tabs;
     @BindView(R.id.container)
     ViewPager container;
-    @BindView(R.id.fab)
-    FloatingActionButton fab;
     @BindView(R.id.main_content)
     CoordinatorLayout mainContent;
     @BindView(R.id.nav_view)

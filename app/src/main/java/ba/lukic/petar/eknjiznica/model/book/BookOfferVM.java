@@ -17,16 +17,14 @@ public class BookOfferVM implements Parcelable {
     public String Title;
     @SerializedName("Description")
     public String Description;
-
     @SerializedName("UserHasBook")
     public boolean UserHasBook;
     @SerializedName("UserRating")
     public int UserRating;
     @SerializedName("AuthorName")
     public String AuthorName;
-    @SerializedName("Price ")
+    @SerializedName("Price")
     public double Price;
-
     @SerializedName("IsActive")
     public boolean IsActive;
     @SerializedName("ImageUrl")
@@ -37,7 +35,7 @@ public class BookOfferVM implements Parcelable {
     public String BookState;
     @SerializedName("ImageUri")
     public String ImageUri;
-
+    @SerializedName("AddedToFavorites")
     public DateTime AddedToFavorites;
 
 
@@ -55,7 +53,9 @@ public class BookOfferVM implements Parcelable {
         AverageRating = in.readDouble();
         BookState = in.readString();
         ImageUri = in.readString();
-        AddedToFavorites = new DateTime(in.readLong());
+        long dateTime = in.readLong();
+        if(dateTime!=0)
+            AddedToFavorites = new DateTime(dateTime);
     }
 
     @Override
@@ -73,7 +73,8 @@ public class BookOfferVM implements Parcelable {
         dest.writeDouble(AverageRating);
         dest.writeString(BookState);
         dest.writeString(ImageUri);
-        dest.writeLong(AddedToFavorites.getMillis());
+        if(AddedToFavorites!=null)
+            dest.writeLong(AddedToFavorites.getMillis());
 
     }
 

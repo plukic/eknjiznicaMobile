@@ -1,7 +1,9 @@
 package ba.lukic.petar.eknjiznica.ui.books;
 
 import org.greenrobot.eventbus.EventBus;
+import org.joda.time.DateTime;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -29,10 +31,27 @@ public abstract class BooksPresenter<T> implements BooksContract.Presenter<T> {
         if(contains){
             integers.remove((bookOfferVM));
         }else{
+            bookOfferVM.AddedToFavorites= DateTime.now();
             integers.add(bookOfferVM);
         }
         bookRepo.SetFavoriteBooks(integers);
         FavoriteBookToggleEvent event = new FavoriteBookToggleEvent(bookOfferVM,true);
+        eventBus.post(event);
+
+    }
+    @Override
+    public void onFavoriteToggle(BookOfferVM bookOfferVM,boolean displayNotification) {
+        List<BookOfferVM> integers = bookRepo.GetFavoriteBooks();
+
+        boolean contains = integers.contains(bookOfferVM);
+        if(contains){
+            integers.remove((bookOfferVM));
+        }else{
+            bookOfferVM.AddedToFavorites= DateTime.now();
+            integers.add(bookOfferVM);
+        }
+        bookRepo.SetFavoriteBooks(integers);
+        FavoriteBookToggleEvent event = new FavoriteBookToggleEvent(bookOfferVM,displayNotification);
         eventBus.post(event);
 
     }

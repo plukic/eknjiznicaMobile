@@ -7,6 +7,9 @@ import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 public interface BooksContract  {
     interface  Presenter<T> extends BasePresenter<T> {
         void onFavoriteToggle(BookOfferVM bookOfferVM);
+
+        void onFavoriteToggle(BookOfferVM bookOfferVM, boolean displayNotification);
+
         boolean isInFavorite(BookOfferVM bookOfferVM);
     }
 }

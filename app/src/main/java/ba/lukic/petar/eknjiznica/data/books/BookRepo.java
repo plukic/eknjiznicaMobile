@@ -52,4 +52,15 @@ public class BookRepo implements IBookRepo {
     public Observable<List<CategoryVM>> GetTopSellingCategories() {
         return apiService.GetTopSellingCategories();
     }
+
+    @Override
+    public void SetBasketBooks(List<BookOfferVM> bookOfferVMS) {
+         sharedPrefsRepo.saveBasketBooks(bookOfferVMS);
+
+    }
+
+    @Override
+    public List<BookOfferVM> GetBasketBooks() {
+        return sharedPrefsRepo.getBasketBooks();
+    }
 }

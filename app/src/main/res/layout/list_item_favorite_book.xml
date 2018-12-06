@@ -71,7 +71,7 @@
                 android:layout_marginRight="8dp"
                 android:textColor="?android:textColorPrimary"
                 app:layout_constraintTop_toTopOf="@id/book_image"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_favorite"
                 app:layout_constraintStart_toStartOf="@id/tv_author"
                 tools:text="Harry Potterrrrrrrrrrrrrr" />
 

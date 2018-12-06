@@ -56,4 +56,6 @@
     <string name="title_logout_message">Ova akcija odjavit će vas s trenutno aktivnog korisničkog računa.</string>
     <string name="title_activity_login">Logiraj se</string>
     <string name="no_favorite_books">Favoriti su prazni.</string>
+    <string name="added_to_favorites">Dodano %s</string>
+    <string name="book_added_to_basket">Knjiga je dodana u košaricu.</string>
 </resources>

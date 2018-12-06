@@ -18,4 +18,6 @@ public interface IBookRepo {
     Observable<List<CategoryVM>> GetCategories();
     Observable<List<CategoryVM>> GetTopSellingCategories();
 
+    void SetBasketBooks(List<BookOfferVM> bookOfferVMS);
+    List<BookOfferVM> GetBasketBooks();
 }
