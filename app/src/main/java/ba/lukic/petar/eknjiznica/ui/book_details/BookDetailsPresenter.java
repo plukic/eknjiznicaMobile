@@ -1,30 +1,36 @@
 package ba.lukic.petar.eknjiznica.ui.book_details;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.data.books.IBookRepo;
+import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
+import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 
 public class BookDetailsPresenter implements BookDetailsContract.Presenter {
     IBookRepo bookRepo;
     private BookDetailsContract.View view;
-
     @Inject
     public BookDetailsPresenter(IBookRepo bookRepo) {
         this.bookRepo = bookRepo;
     }
 
+
+
     @Override
-    public void toggleFavorite(Integer bookId) {
-        List<Integer> integers = bookRepo.GetFavoriteBooks();
-        boolean contains = integers.contains(bookId);
+    public void toggleFavorite(BookOfferVM bookOfferVM) {
+        List<BookOfferVM> books = bookRepo.GetFavoriteBooks();
+
+        boolean contains = books.contains(bookOfferVM);
         if(contains) {
-            integers.remove(bookId);
+            books.remove(bookOfferVM);
         }else {
-            integers.add(bookId);
+            books.add(bookOfferVM);
         }
-        bookRepo.SetFavoriteBooks(integers);
+        bookRepo.SetFavoriteBooks(books);
         view.toggleFavoriteIcon(!contains);
     }
 

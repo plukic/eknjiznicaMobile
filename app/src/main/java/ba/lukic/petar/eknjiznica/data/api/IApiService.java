@@ -4,6 +4,7 @@ package ba.lukic.petar.eknjiznica.data.api;
 import java.util.List;
 
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
+import ba.lukic.petar.eknjiznica.model.category.CategoryVM;
 import ba.lukic.petar.eknjiznica.model.login.AuthenticationResponse;
 import ba.lukic.petar.eknjiznica.model.user.ClientAddVM;
 import ba.lukic.petar.eknjiznica.model.user.ClientUpdateVM;
@@ -43,4 +44,10 @@ public interface IApiService {
     Observable<List<BookOfferVM>> GetRecommendedBooks();
     @GET("api/books/topselling")
     Observable<List<BookOfferVM>> GetTopSellingBooks();
+
+
+    @GET("api/categories")
+    Observable<List<CategoryVM>> GetCategories();
+    @GET("api/categories/topselling")
+    Observable<List<CategoryVM>> GetTopSellingCategories();
 }

@@ -81,7 +81,7 @@ public class LoginActivity extends BaseDaggerActivity implements LoginContract.V
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
-
+        setupToolbar(toolbar,false,R.string.title_activity_login);
         presenter.takeView(this);
         presenter.onStart();
         setupValidation();

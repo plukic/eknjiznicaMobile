@@ -1,6 +1,5 @@
 package ba.lukic.petar.eknjiznica.ui.recommended;
 
-import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -22,37 +21,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ba.lukic.petar.eknjiznica.R;
+import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
+import ba.lukic.petar.eknjiznica.ui.books.BooksContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecommendedBooksAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 
-
+    public void favoriteBookTogle(FavoriteBookToggleEvent bookOfferVM) {
+        for (int i =0;i<bookOfferVMList.size();i++){
+            if(bookOfferVM.data.BookId==bookOfferVMList.get(i).BookId){
+                notifyItemChanged(i);
+            }
+        }
+    }
 
     public interface IRecommendedBooksCallback {
         void onOpenBookDetails(BookOfferVM bookOfferVM);
     }
 
     private List<BookOfferVM> bookOfferVMList = new ArrayList<>();
-    private RecommededBooksContract.Presenter presenter;
+    private BooksContract.Presenter presenter;
     private RequestManager requestManager;
     private IRecommendedBooksCallback callback;
-    private Resources resources;
 
-    public RecommendedBooksAdapter(RecommededBooksContract.Presenter presenter, RequestManager requestManager, IRecommendedBooksCallback callback, Resources resources) {
+    public RecommendedBooksAdapter(BooksContract.Presenter presenter, RequestManager requestManager, IRecommendedBooksCallback callback) {
         this.presenter = presenter;
         this.requestManager = requestManager;
         this.callback = callback;
-        this.resources = resources;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View inflate = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_book, viewGroup, false);
-
         return new ViewHolder(inflate, requestManager);
     }
 
@@ -131,9 +135,9 @@ public class RecommendedBooksAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 
         @Subscribe(threadMode = ThreadMode.MAIN)
-        public void onMessageEvent(BookOfferVM toggleBook) {
-            if(bookOfferVM.BookId==toggleBook.BookId){
-                boolean inFavorite = presenter.isInFavorite(toggleBook);
+        public void onMessageEvent(FavoriteBookToggleEvent toggleBook) {
+            if(bookOfferVM.BookId==toggleBook.data.BookId){
+                boolean inFavorite = presenter.isInFavorite(toggleBook.data);
                 changeIcon(inFavorite);
             }
         };

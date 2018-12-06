@@ -2,6 +2,8 @@ package ba.lukic.petar.eknjiznica.ui.recommended;
 
 import ba.lukic.petar.eknjiznica.di.ActivityScoped;
 import ba.lukic.petar.eknjiznica.di.FragmentScoped;
+import ba.lukic.petar.eknjiznica.ui.home.HomeActivity;
+import ba.lukic.petar.eknjiznica.util.DialogFactory;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
@@ -18,4 +20,11 @@ public abstract class RecommendedModule {
     @Binds
     @ActivityScoped
     abstract RecommededBooksContract.Presenter presenter(RecommendedBooksPresenter presenter);
+
+
+    @Provides
+    @ActivityScoped
+    static DialogFactory dialogFactory(HomeActivity activity){
+        return new DialogFactory(activity);
+    };
 }

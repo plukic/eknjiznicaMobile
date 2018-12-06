@@ -29,7 +29,7 @@ android {
     productFlavors {
         dev {
             dimension "mode"
-            buildConfigField("String", "BASE_URL", "\"http://192.168.88.151/eknjiznica/\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.58.252/eknjiznica/\"")
         }
         prod {
             dimension "mode"

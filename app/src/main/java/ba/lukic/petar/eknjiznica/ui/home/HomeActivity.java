@@ -21,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,8 +29,11 @@ import javax.inject.Inject;
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerAuthorizedActivity;
 import ba.lukic.petar.eknjiznica.data.account.IAccountRepo;
+import ba.lukic.petar.eknjiznica.ui.categories.CategoriesFragment;
+import ba.lukic.petar.eknjiznica.ui.favorite_books.FavoriteBooksFragment;
 import ba.lukic.petar.eknjiznica.ui.profile.ProfileActivity;
 import ba.lukic.petar.eknjiznica.ui.recommended.RecommendedBooksFragment;
+import ba.lukic.petar.eknjiznica.util.DialogFactory;
 import ba.lukic.petar.eknjiznica.util.ISchedulersProvider;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +64,8 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
     IAccountRepo accountRepo;
     @Inject
     ISchedulersProvider schedulersProvider;
+    @Inject
+    DialogFactory dialogFactory;
 
     private TextView tvFullName;
     private TextView tvEmail;
@@ -82,8 +86,8 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
         supportActionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
 
-        List<Fragment> fragments = Arrays.asList(RecommendedBooksFragment.newInstance(),PlaceholderFragment.newInstance(2),PlaceholderFragment.newInstance(3));
-        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),fragments);
+        List<Fragment> fragments = Arrays.asList(RecommendedBooksFragment.newInstance(), CategoriesFragment.newInstance(), FavoriteBooksFragment.GetInstance());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), fragments);
 
         // Set up the ViewPager with the sections adapter.
         container.setAdapter(mSectionsPagerAdapter);
@@ -93,10 +97,15 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
 
         setupNavHeader();
 
+
         navView.setNavigationItemSelectedListener(menuItem -> {
+                    drawerLayout.closeDrawers();
                     switch (menuItem.getItemId()) {
+                        case R.id.nav_books:
+                            return true;
+
                         case R.id.nav_logout:
-                            super.logoutUser(null);
+                            onLogoutAction();
                             return true;
                         case R.id.nav_profile:
                             startActivity(ProfileActivity.getInstance(HomeActivity.this));
@@ -105,6 +114,16 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
                     return false;
                 }
         );
+
+    }
+
+    private void onLogoutAction() {
+        dialogFactory.createCancelOkDialog(R.string.title_logout, R.string.title_logout_message, (dialogInterface, i) -> {
+            HomeActivity.this.logoutUser(null);
+            dialogInterface.dismiss();
+        }, (dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        }).show();
 
     }
 
@@ -125,6 +144,7 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
         compositeDisposable.add(subscribe);
 
     }
+
 
     @Override
     protected void onDestroy() {
@@ -174,6 +194,7 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         List<Fragment> fragments;
+
         public SectionsPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
             super(fm);
             this.fragments = fragments;

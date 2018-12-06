@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
 
 public class BookOfferVM implements Parcelable {
     @SerializedName("Id")
@@ -37,6 +38,8 @@ public class BookOfferVM implements Parcelable {
     @SerializedName("ImageUri")
     public String ImageUri;
 
+    public DateTime AddedToFavorites;
+
 
     protected BookOfferVM(Parcel in) {
         Id = in.readInt();
@@ -52,6 +55,7 @@ public class BookOfferVM implements Parcelable {
         AverageRating = in.readDouble();
         BookState = in.readString();
         ImageUri = in.readString();
+        AddedToFavorites = new DateTime(in.readLong());
     }
 
     @Override
@@ -69,6 +73,8 @@ public class BookOfferVM implements Parcelable {
         dest.writeDouble(AverageRating);
         dest.writeString(BookState);
         dest.writeString(ImageUri);
+        dest.writeLong(AddedToFavorites.getMillis());
+
     }
 
     @Override
@@ -87,4 +93,22 @@ public class BookOfferVM implements Parcelable {
             return new BookOfferVM[size];
         }
     };
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BookOfferVM that = (BookOfferVM) o;
+
+        if (Id != that.Id) return false;
+        return BookId == that.BookId;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Id;
+        result = 31 * result + BookId;
+        return result;
+    }
 }

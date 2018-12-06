@@ -65,4 +65,13 @@ public class DateAndTimeUtil {
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/yyyy");
         return dtf.print(accountActiveTo);    }
+
+    public String FormatForAddedToFavorites(DateTime addedToFavorites) {
+        if(addedToFavorites==null)
+            return "";
+
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
+        return dtf.print(addedToFavorites);
+
+    }
 }

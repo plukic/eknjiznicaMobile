@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -90,11 +91,23 @@ public class ProfileActivity extends BaseDaggerAuthorizedActivity implements Pro
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
+        setupToolbar(toolbar,true,R.string.title_activity_profile);
+
 
         loadProfileInfo();
         setupValidation();
         presenter.takeView(this);
         presenter.onStart();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()==android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadProfileInfo() {

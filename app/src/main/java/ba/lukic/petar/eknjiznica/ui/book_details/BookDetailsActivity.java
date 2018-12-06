@@ -21,6 +21,7 @@ import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerAuthorizedActivity;
+import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,6 +56,8 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
 
     @Inject
     BookDetailsContract.Presenter presenter;
+    @Inject
+    EventBus eventBus;
     private BookOfferVM book;
 
     public static Intent GetInstance(BookOfferVM bookOfferVM, Context ctx) {
@@ -97,8 +100,8 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
             finish();
             return true;
         } else if (itemId == R.id.menu_favorite) {
-            presenter.toggleFavorite(book.BookId);
-            EventBus.getDefault().post(book);
+            presenter.toggleFavorite(book);
+            eventBus.post(new FavoriteBookToggleEvent(book, false));
             invalidateOptionsMenu();
         }
         return super.onOptionsItemSelected(item);
@@ -130,6 +133,8 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
 
     @Override
     public void toggleFavoriteIcon(boolean isFavorite) {
+        invalidateOptionsMenu();
+
         Snackbar make;
         if (isFavorite) {
             make = Snackbar.make(parent, String.format(getString(R.string.book_favorite_added), book.Title), Snackbar.LENGTH_LONG);
@@ -137,7 +142,7 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
             make = Snackbar.make(parent, String.format(getString(R.string.book_favorite_removed), book.Title), Snackbar.LENGTH_LONG);
         }
         make.setAction(R.string.undo, view -> {
-            presenter.toggleFavorite(book.BookId);
+            presenter.toggleFavorite(book);
         });
         make.show();
     }

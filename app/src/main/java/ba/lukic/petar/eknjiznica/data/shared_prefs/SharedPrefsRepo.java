@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import ba.lukic.petar.eknjiznica.model.login.AuthenticationResponse;
 import ba.lukic.petar.eknjiznica.model.user.ClientsDetailsModel;
 import io.reactivex.Completable;
@@ -69,17 +70,17 @@ public class SharedPrefsRepo {
         return uniqueId;
     }
 
-    public List<Integer> getFavoriteBooks() {
+    public List<BookOfferVM> getFavoriteBooks() {
         String json = helper.getSharedPreferenceString(KEY_FAVORITE_BOOKS, "");
         Type listType = new TypeToken<ArrayList<Integer>>() {
         }.getType();
-        List<Integer> yourClassList = new Gson().fromJson(json, listType);
+        List<BookOfferVM> yourClassList = new Gson().fromJson(json, listType);
         if (yourClassList == null)
             yourClassList = new ArrayList<>();
         return yourClassList;
     }
 
-    public void saveFavoriteBooks(List<Integer> bookId) {
+    public void saveFavoriteBooks(List<BookOfferVM> bookId) {
         String json = gson.toJson(bookId);
         helper.setSharedPreferenceString(KEY_FAVORITE_BOOKS, json);
     }

@@ -4,6 +4,8 @@ import ba.lukic.petar.eknjiznica.di.ActivityScoped;
 import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity;
 import ba.lukic.petar.eknjiznica.ui.SplashScreen;
 import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsModule;
+import ba.lukic.petar.eknjiznica.ui.categories.CategoriesModule;
+import ba.lukic.petar.eknjiznica.ui.favorite_books.FavoriteModule;
 import ba.lukic.petar.eknjiznica.ui.home.HomeActivity;
 import ba.lukic.petar.eknjiznica.ui.login.LoginActivity;
 import ba.lukic.petar.eknjiznica.ui.login.LoginModule;
@@ -34,7 +36,7 @@ public abstract class ActivityBindingModule {
 
 
     @ActivityScoped
-    @ContributesAndroidInjector(modules = {RecommendedModule.class})
+    @ContributesAndroidInjector(modules = {RecommendedModule.class,CategoriesModule.class,FavoriteModule.class})
     abstract HomeActivity homeActivity();
 
     @ActivityScoped

@@ -23,9 +23,9 @@
     <string name="error_field_first_name_invalid">Unesite ispravno ime.</string>
     <string name="error_field_last_name_invalid">Unesite ispravno prezime</string>
     <string name="title_activity_home">Knjige</string>
-    <string name="tab_text_recommended">Tab 1</string>
-    <string name="tab_text_categories">Tab 2</string>
-    <string name="tab_text_favorites">Tab 3</string>
+    <string name="tab_text_recommended">Preporučeno</string>
+    <string name="tab_text_categories">Kategorije</string>
+    <string name="tab_text_favorites">Favoriti</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="nav_books">Knjige</string>
@@ -52,4 +52,8 @@
     <string name="book_favorite_added">%s je uspješno dodan u favorite</string>
     <string name="book_favorite_removed">%s je uspješno uklonjen iz favorita</string>
     <string name="menu_favorite">Favoriti</string>
+    <string name="title_logout">Odjava</string>
+    <string name="title_logout_message">Ova akcija odjavit će vas s trenutno aktivnog korisničkog računa.</string>
+    <string name="title_activity_login">Logiraj se</string>
+    <string name="no_favorite_books">Favoriti su prazni.</string>
 </resources>

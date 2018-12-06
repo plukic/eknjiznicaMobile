@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import ba.lukic.petar.eknjiznica.data.api.IApiService;
 import ba.lukic.petar.eknjiznica.data.shared_prefs.SharedPrefsRepo;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
+import ba.lukic.petar.eknjiznica.model.category.CategoryVM;
 import io.reactivex.Observable;
 
 public class BookRepo implements IBookRepo {
@@ -32,12 +33,23 @@ public class BookRepo implements IBookRepo {
     }
 
     @Override
-    public List<Integer> GetFavoriteBooks(){
+    public List<BookOfferVM> GetFavoriteBooks(){
         return sharedPrefsRepo.getFavoriteBooks();
     }
 
     @Override
-    public void SetFavoriteBooks(List<Integer> books){
+    public void SetFavoriteBooks(List<BookOfferVM> books){
         sharedPrefsRepo.saveFavoriteBooks(books);
+    }
+
+    @Override
+    public Observable<List<CategoryVM>> GetCategories() {
+        return apiService.GetCategories();
+
+    }
+
+    @Override
+    public Observable<List<CategoryVM>> GetTopSellingCategories() {
+        return apiService.GetTopSellingCategories();
     }
 }

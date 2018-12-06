@@ -22,8 +22,10 @@ import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerFragment;
+import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity;
+import ba.lukic.petar.eknjiznica.ui.books.BooksContract;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -68,8 +70,8 @@ public class RecommendedBooksFragment extends BaseDaggerFragment implements Reco
         View view = inflater.inflate(R.layout.fragment_recommended_books, container, false);
         unbinder = ButterKnife.bind(this, view);
 
-        topSellingAdapter = new RecommendedBooksAdapter(presenter, Glide.with(this), this, getResources());
-        recommededAdapter = new RecommendedBooksAdapter(presenter, Glide.with(this), this, getResources());
+        topSellingAdapter = new RecommendedBooksAdapter(presenter, Glide.with(this), this);
+        recommededAdapter = new RecommendedBooksAdapter(presenter, Glide.with(this), this);
 
         rvMostRead.setAdapter(recommededAdapter);
         rvTopSelling.setAdapter(topSellingAdapter);
@@ -79,14 +81,25 @@ public class RecommendedBooksFragment extends BaseDaggerFragment implements Reco
 
         presenter.takeView(this);
         presenter.onStart();
-        presenter.loadBooks();
         swipeRefreshLayout.setOnRefreshListener(() -> presenter.loadBooks());
-
+        presenter.loadBooks();
         EventBus.getDefault().register(this);
+
         return view;
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
 
     @Override
     public void onDestroyView() {
@@ -149,17 +162,22 @@ public class RecommendedBooksFragment extends BaseDaggerFragment implements Reco
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(BookOfferVM bookOfferVM) {
-        boolean isFavorite = presenter.isInFavorite(bookOfferVM);
+    public void onMessageEvent(FavoriteBookToggleEvent bookOfferVM) {
+        recommededAdapter.favoriteBookTogle(bookOfferVM);
+        topSellingAdapter.favoriteBookTogle(bookOfferVM);
+        if(!bookOfferVM.displayNotification)
+            return;
+
+        boolean isFavorite = presenter.isInFavorite(bookOfferVM.data);
 
         Snackbar make;
         if (isFavorite) {
-            make = Snackbar.make(swipeRefreshLayout, String.format(getString(R.string.book_favorite_added), bookOfferVM.Title), Snackbar.LENGTH_LONG);
+            make = Snackbar.make(swipeRefreshLayout, String.format(getString(R.string.book_favorite_added), bookOfferVM.data.Title), Snackbar.LENGTH_LONG);
         } else {
-            make = Snackbar.make(swipeRefreshLayout, String.format(getString(R.string.book_favorite_removed), bookOfferVM.Title), Snackbar.LENGTH_LONG);
+            make = Snackbar.make(swipeRefreshLayout, String.format(getString(R.string.book_favorite_removed), bookOfferVM.data.Title), Snackbar.LENGTH_LONG);
         }
         make.setAction(R.string.undo, view -> {
-            presenter.onFavoriteToggle(bookOfferVM);
+            presenter.onFavoriteToggle(bookOfferVM.data);
         });
         make.show();
     }
