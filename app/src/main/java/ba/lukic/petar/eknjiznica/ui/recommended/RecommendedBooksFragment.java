@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerFragment;
 import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
+import ba.lukic.petar.eknjiznica.model.book.BookBuyEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity;
 import ba.lukic.petar.eknjiznica.ui.books.BooksContract;
@@ -180,6 +181,10 @@ public class RecommendedBooksFragment extends BaseDaggerFragment implements Reco
             presenter.onFavoriteToggle(bookOfferVM.data);
         });
         make.show();
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onBooksBuy(BookBuyEvent bookOfferVM) {
+        presenter.loadBooks();
     }
 
 

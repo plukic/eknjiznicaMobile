@@ -73,7 +73,7 @@ public class SharedPrefsRepo {
 
     public List<BookOfferVM> getFavoriteBooks() {
         try{
-            String json = helper.getSharedPreferenceString(KEY_BASKET_BOOKS, "");
+            String json = helper.getSharedPreferenceString(KEY_FAVORITE_BOOKS, "");
             Type listType = new TypeToken<ArrayList<BookOfferVM>>() {}.getType();
             List<BookOfferVM> yourClassList = gson.fromJson(json, listType);
             if (yourClassList == null)
@@ -86,7 +86,7 @@ public class SharedPrefsRepo {
 
     public void saveBasketBooks(List<BookOfferVM> bookId) {
         String json = gson.toJson(bookId);
-        helper.setSharedPreferenceString(KEY_FAVORITE_BOOKS, json);
+        helper.setSharedPreferenceString(KEY_BASKET_BOOKS, json);
     }
 
     public List<BookOfferVM> getBasketBooks() {

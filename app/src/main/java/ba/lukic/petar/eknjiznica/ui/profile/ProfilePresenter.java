@@ -1,5 +1,7 @@
 package ba.lukic.petar.eknjiznica.ui.profile;
 
+import org.greenrobot.eventbus.EventBus;
+
 import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.data.account.IAccountRepo;
@@ -10,27 +12,27 @@ import ba.lukic.petar.eknjiznica.util.MyRegex;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
-    @Inject
-
     MyRegex myRegex;
-    @Inject
     IAccountRepo accountRepo;
-
-    @Inject
     BaseErrorFactory baseErrorFactory;
-    @Inject
     ISchedulersProvider schedulersProvider;
+    EventBus eventBus;
 
+    @Inject
+    public ProfilePresenter(MyRegex myRegex, IAccountRepo accountRepo, BaseErrorFactory baseErrorFactory, ISchedulersProvider schedulersProvider, EventBus eventBus) {
+        this.myRegex = myRegex;
+        this.accountRepo = accountRepo;
+        this.baseErrorFactory = baseErrorFactory;
+        this.schedulersProvider = schedulersProvider;
+        this.eventBus = eventBus;
+    }
 
     private ProfileContract.View view;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    @Inject
-    public ProfilePresenter(MyRegex myRegex) {
-        this.myRegex = myRegex;
-    }
+
 
     @Override
     public boolean isValidFirstName(String value) {
@@ -78,12 +80,16 @@ public class ProfilePresenter implements ProfileContract.Presenter {
 
         compositeDisposable.add(
                 accountRepo.updateUser(clientUpdateVM)
+                        .toObservable()
+                        .flatMap(o -> accountRepo.loadUserProfileInfo())
                         .subscribeOn(schedulersProvider.network())
                         .observeOn(schedulersProvider.main())
                         .doOnSubscribe(disposable -> view.displayLoading(true))
-                        .subscribe(() -> {
+                        .subscribe((clientsDetailsModel) -> {
                             view.displayLoading(false);
                             view.displayUpdateSuccessfully();
+                            eventBus.post(clientsDetailsModel);
+
                         }, throwable -> {
                             view.displayLoading(false);
                             String error = baseErrorFactory.parseSingleError(throwable, "profile_update");

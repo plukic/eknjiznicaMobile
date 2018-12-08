@@ -1,5 +1,6 @@
 package ba.lukic.petar.eknjiznica.ui.book_details;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +22,8 @@ import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerAuthorizedActivity;
-import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
+import ba.lukic.petar.eknjiznica.util.DialogFactory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -59,7 +60,11 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
     BookDetailsContract.Presenter presenter;
     @Inject
     EventBus eventBus;
+    @Inject
+    DialogFactory dialogFactory;
+
     private BookOfferVM book;
+    private ProgressDialog progressDialog;
 
     public static Intent GetInstance(BookOfferVM bookOfferVM, Context ctx) {
         Intent i = new Intent(ctx, BookDetailsActivity.class);
@@ -86,11 +91,24 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
 
         Glide.with(this).load(book.ImageUrl).apply(new RequestOptions().error(android.R.color.white).placeholder(android.R.color.white)).into(bookImage);
         presenter.takeView(this);
+
+        toggleShoppingCartIcon();
+    }
+
+    private void toggleShoppingCartIcon() {
+        if (book.UserHasBook) {
+            fabShoppingCart.setImageResource(R.drawable.ic_cloud_download_black_24dp);
+        } else {
+            fabShoppingCart.setImageResource(R.drawable.ic_add_shopping_cart_black_24dp);
+        }
     }
 
     @OnClick(R.id.fab_shopping_cart)
-    public void onShoppingCart(){
-        presenter.addBookToBasket(book);
+    public void onShoppingCart() {
+        if (book.UserHasBook)
+            presenter.downloadBook(book);
+        else
+            presenter.addBookToBasket(book);
     }
 
     @Override
@@ -106,7 +124,7 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
             finish();
             return true;
         } else if (itemId == R.id.menu_favorite) {
-            presenter.onFavoriteToggle(book,false);
+            presenter.onFavoriteToggle(book, false);
             invalidateOptionsMenu();
         }
         return super.onOptionsItemSelected(item);
@@ -147,14 +165,36 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
             make = Snackbar.make(parent, String.format(getString(R.string.book_favorite_removed), book.Title), Snackbar.LENGTH_LONG);
         }
         make.setAction(R.string.undo, view -> {
-            presenter.onFavoriteToggle(book,false);
+            presenter.onFavoriteToggle(book, false);
         });
         make.show();
     }
 
     @Override
     public void displayBookAddedToBasket() {
-        Snackbar.make(parent,getString(R.string.book_added_to_basket), Snackbar.LENGTH_LONG).show();
+        Snackbar.make(parent, getString(R.string.book_added_to_basket), Snackbar.LENGTH_LONG).show();
 
+    }
+
+    @Override
+    public void displayBookSendSuccessfully() {
+        Snackbar.make(parent, getString(R.string.book_sent_to_email), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void displayBookSendingError() {
+        Snackbar.make(parent, getString(R.string.error_sending_book), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void displaySendingBookToEmail(boolean isSending) {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        if (isSending) {
+            progressDialog = dialogFactory.createProgressDialog(R.string.sending_book_to_email);
+            progressDialog.show();
+        }
     }
 }

@@ -6,7 +6,8 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormatter;
+
+import java.util.List;
 
 public class BookOfferVM implements Parcelable {
     @SerializedName("Id")
@@ -37,7 +38,23 @@ public class BookOfferVM implements Parcelable {
     public String ImageUri;
     @SerializedName("AddedToFavorites")
     public DateTime AddedToFavorites;
+    @SerializedName("Categories")
+    public List<CategoryVM> Categories;
 
+
+    public BookOfferVM(ClientBookVM clientBookVM) {
+        Id = clientBookVM.OfferId;
+        BookId = clientBookVM.BookId;
+        Title = clientBookVM.BookTitle;
+        Description = clientBookVM.BookDescription;
+        UserHasBook = true;
+        UserRating = clientBookVM.UserRating;
+        AuthorName = clientBookVM.AuthorName;
+        Price = clientBookVM.Price;
+        ImageUrl = clientBookVM.FullImageUrl;
+        Categories = clientBookVM.Categories;
+
+    }
 
     protected BookOfferVM(Parcel in) {
         Id = in.readInt();
@@ -53,8 +70,10 @@ public class BookOfferVM implements Parcelable {
         AverageRating = in.readDouble();
         BookState = in.readString();
         ImageUri = in.readString();
+        Categories = in.createTypedArrayList(CategoryVM.CREATOR);
+
         long dateTime = in.readLong();
-        if(dateTime!=0)
+        if (dateTime != 0)
             AddedToFavorites = new DateTime(dateTime);
     }
 
@@ -73,9 +92,9 @@ public class BookOfferVM implements Parcelable {
         dest.writeDouble(AverageRating);
         dest.writeString(BookState);
         dest.writeString(ImageUri);
-        if(AddedToFavorites!=null)
+        dest.writeTypedList(Categories);
+        if (AddedToFavorites != null)
             dest.writeLong(AddedToFavorites.getMillis());
-
     }
 
     @Override

@@ -2,7 +2,7 @@
     <string name="app_name">eKnjiznica</string>
     <string name="warning_log_out_session_expired">Vaša sesija je istekla.</string>
     <string name="msg_unexpected_error">Došlo je do neočekivane greške</string>
-    <string name="OK">Ok</string>
+    <string name="OK">OK</string>
     <string name="Cancel">Odustani</string>
     <string name="client_id">mobile</string>
     <string name="label_username">Korisničko ime</string>
@@ -57,5 +57,19 @@
     <string name="title_activity_login">Logiraj se</string>
     <string name="no_favorite_books">Favoriti su prazni.</string>
     <string name="added_to_favorites">Dodano %s</string>
+    <string name="buy_date">Kupljeno %s</string>
     <string name="book_added_to_basket">Knjiga je dodana u košaricu.</string>
+    <string name="book_sent_to_email">Knjiga je poslana na email.</string>
+    <string name="books_sent_to_email">Knjige su poslane na email.</string>
+    <string name="error_sending_book">Greška prilikom slanja knjige.</string>
+    <string name="sending_book_to_email">Šaljemo knjigu na emial..</string>
+    <string name="buy">Kupi</string>
+    <string name="title_shopping_cart_activity">Moja košarica</string>
+    <string name="buying_book">Kupujem knjige…</string>
+    <string name="total_price">Ukupno: %.2f KM</string>
+    <string name="price">Cijena: %.2f KM</string>
+    <string name="tax">Porez: %.2f KM</string>
+    <string name="search_hint">Naziv knjige</string>
+    <string name="book_name">Naziv knjige</string>
+    <string name="title_my_books">Moje knjige</string>
 </resources>

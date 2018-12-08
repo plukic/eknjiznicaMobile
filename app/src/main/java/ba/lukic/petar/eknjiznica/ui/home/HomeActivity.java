@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +20,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,10 +32,14 @@ import javax.inject.Inject;
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerAuthorizedActivity;
 import ba.lukic.petar.eknjiznica.data.account.IAccountRepo;
+import ba.lukic.petar.eknjiznica.model.book.BookBuyEvent;
+import ba.lukic.petar.eknjiznica.model.user.ClientsDetailsModel;
 import ba.lukic.petar.eknjiznica.ui.categories.CategoriesFragment;
 import ba.lukic.petar.eknjiznica.ui.favorite_books.FavoriteBooksFragment;
+import ba.lukic.petar.eknjiznica.ui.my_books.MyBooksActivity;
 import ba.lukic.petar.eknjiznica.ui.profile.ProfileActivity;
 import ba.lukic.petar.eknjiznica.ui.recommended.RecommendedBooksFragment;
+import ba.lukic.petar.eknjiznica.ui.shopping_cart.ShoppingCartActivity;
 import ba.lukic.petar.eknjiznica.util.DialogFactory;
 import ba.lukic.petar.eknjiznica.util.ISchedulersProvider;
 import butterknife.BindView;
@@ -68,6 +75,8 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
     private TextView tvFullName;
     private TextView tvEmail;
 
+    @Inject
+    EventBus eventBus;
     CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
@@ -101,7 +110,12 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
                     switch (menuItem.getItemId()) {
                         case R.id.nav_books:
                             return true;
-
+                        case R.id.nav_my_books:
+                        startActivity(MyBooksActivity.GetInstance(HomeActivity.this));
+                        break;
+                        case R.id.nav_my_basket:
+                            startActivity(ShoppingCartActivity.GetInstance(HomeActivity.this));
+                            return true;
                         case R.id.nav_logout:
                             onLogoutAction();
                             return true;
@@ -112,6 +126,8 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
                     return false;
                 }
         );
+
+
 
     }
 
@@ -143,6 +159,11 @@ public class HomeActivity extends BaseDaggerAuthorizedActivity {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProfileUpdate(ClientsDetailsModel clientsDetailsModel) {
+        tvFullName.setText(String.format("%s %s", clientsDetailsModel.FirstName, clientsDetailsModel.LastName));
+        tvEmail.setText(clientsDetailsModel.Email);
+    }
 
     @Override
     protected void onDestroy() {

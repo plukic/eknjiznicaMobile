@@ -34,7 +34,15 @@
         <activity
             android:name=".ui.book_details.BookDetailsActivity"
             android:label="@string/title_activity_book_details"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity android:name=".ui.shopping_cart.ShoppingCartActivity" />
+        <activity android:name=".ui.my_books.MyBooksActivity" android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
     </application>
 
 </manifest>

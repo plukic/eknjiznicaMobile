@@ -10,9 +10,17 @@ public interface BookDetailsContract {
     interface View extends BaseView<Presenter> {
         void toggleFavoriteIcon(boolean isFavorite);
         void displayBookAddedToBasket();
+
+        void displayBookSendSuccessfully();
+
+        void displayBookSendingError();
+
+        void displaySendingBookToEmail(boolean isSending);
     }
 
     interface Presenter extends BooksContract.Presenter<View> {
         void addBookToBasket(BookOfferVM bookOfferVM);
+
+        void downloadBook(BookOfferVM book);
     }
 }

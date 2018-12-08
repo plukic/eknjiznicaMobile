@@ -7,7 +7,9 @@ import javax.inject.Inject;
 import ba.lukic.petar.eknjiznica.data.api.IApiService;
 import ba.lukic.petar.eknjiznica.data.shared_prefs.SharedPrefsRepo;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
+import ba.lukic.petar.eknjiznica.model.book.ClientBookVM;
 import ba.lukic.petar.eknjiznica.model.category.CategoryVM;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class BookRepo implements IBookRepo {
@@ -62,5 +64,19 @@ public class BookRepo implements IBookRepo {
     @Override
     public List<BookOfferVM> GetBasketBooks() {
         return sharedPrefsRepo.getBasketBooks();
+    }
+
+    @Override
+    public Completable downloadBook(int bookId) {
+        return apiService.DownloadBook(bookId);
+    }
+
+    @Override
+    public Completable BuyBooks(List<BookOfferVM> bookOfferVMS) {
+        return apiService.BuyBook(bookOfferVMS);    }
+
+    @Override
+    public Observable<List<ClientBookVM>> LoadMyBooks(String bookName) {
+        return apiService.LoadMyBooks(bookName);
     }
 }

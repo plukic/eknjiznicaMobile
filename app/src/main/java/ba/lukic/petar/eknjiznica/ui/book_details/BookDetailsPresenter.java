@@ -1,24 +1,28 @@
 package ba.lukic.petar.eknjiznica.ui.book_details;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.data.books.IBookRepo;
-import ba.lukic.petar.eknjiznica.model.FavoriteBookToggleEvent;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
 import ba.lukic.petar.eknjiznica.ui.books.BooksPresenter;
+import ba.lukic.petar.eknjiznica.util.ISchedulersProvider;
+import io.reactivex.disposables.Disposable;
 
 public class BookDetailsPresenter extends BooksPresenter<BookDetailsContract.View> implements BookDetailsContract.Presenter {
-    IBookRepo bookRepo;
+    private IBookRepo bookRepo;
+    private ISchedulersProvider schedulersProvider;
     private BookDetailsContract.View view;
+    private Disposable subscribe;
+
     @Inject
-    public BookDetailsPresenter(IBookRepo bookRepo,EventBus eventBus) {
+    public BookDetailsPresenter(IBookRepo bookRepo, EventBus eventBus, ISchedulersProvider schedulersProvider) {
         super(bookRepo,eventBus);
         this.bookRepo = bookRepo;
+        this.schedulersProvider = schedulersProvider;
     }
 
 
@@ -46,7 +50,8 @@ public class BookDetailsPresenter extends BooksPresenter<BookDetailsContract.Vie
 
     @Override
     public void onStop() {
-
+        if(subscribe!=null)
+            subscribe.dispose();
     }
 
     @Override
@@ -61,5 +66,20 @@ public class BookDetailsPresenter extends BooksPresenter<BookDetailsContract.Vie
 
         }
 
+    }
+
+    @Override
+    public void downloadBook(BookOfferVM book) {
+        subscribe = bookRepo.downloadBook(book.BookId)
+                .subscribeOn(schedulersProvider.network())
+                .observeOn(schedulersProvider.main())
+                .doOnSubscribe(disposable -> view.displaySendingBookToEmail(true))
+                .subscribe(() -> {
+                    view.displaySendingBookToEmail(false);
+                    view.displayBookSendSuccessfully();
+                }, throwable -> {
+                    view.displaySendingBookToEmail(false);
+                    view.displayBookSendingError();
+                });
     }
 }

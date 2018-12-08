@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity">
 
-    <include layout="@layout/app_bar_layout"></include>
+    <include layout="@layout/app_bar_layout"/>
 
 
         <include layout="@layout/content_book_details" />

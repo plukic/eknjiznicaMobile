@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_height="match_parent"
+    tools:context="ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity"
+    tools:showIn="@layout/activity_book_details"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity"
-    tools:showIn="@layout/activity_book_details">
+   >
 
 
     <ImageView
@@ -121,3 +127,4 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_label_description"
         tools:text="@string/demo_description" />
 </android.support.constraint.ConstraintLayout>
+</android.support.v4.widget.NestedScrollView>
