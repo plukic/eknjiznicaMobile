@@ -9,6 +9,8 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 
+import ba.lukic.petar.eknjiznica.model.category.CategoryVM;
+
 public class BookOfferVM implements Parcelable {
     @SerializedName("Id")
     public int Id;

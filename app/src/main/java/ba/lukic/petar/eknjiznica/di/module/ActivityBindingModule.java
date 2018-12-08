@@ -5,6 +5,8 @@ import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsActivity;
 import ba.lukic.petar.eknjiznica.ui.SplashScreen;
 import ba.lukic.petar.eknjiznica.ui.book_details.BookDetailsModule;
 import ba.lukic.petar.eknjiznica.ui.categories.CategoriesModule;
+import ba.lukic.petar.eknjiznica.ui.category_books.CategoryBooksActivity;
+import ba.lukic.petar.eknjiznica.ui.category_books.CategoryBooksModule;
 import ba.lukic.petar.eknjiznica.ui.favorite_books.FavoriteModule;
 import ba.lukic.petar.eknjiznica.ui.home.HomeActivity;
 import ba.lukic.petar.eknjiznica.ui.login.LoginActivity;
@@ -58,6 +60,10 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = MyBooksModule.class)
     abstract MyBooksActivity MyBooksActivity ();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = CategoryBooksModule.class)
+    abstract CategoryBooksActivity CategoryBooksActivity();
 
 
 

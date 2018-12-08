@@ -52,17 +52,25 @@ public class CategoriesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         return categoryVMList.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.tv_category_name)
         TextView tvCategoryName;
+        private CategoryVM categoryVM;
 
         ViewHolder(View view) {
             super((view));
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
         }
 
         public void bind(CategoryVM categoryVM) {
+            this.categoryVM = categoryVM;
             tvCategoryName.setText(categoryVM.CategoryName);
+        }
+
+        @Override
+        public void onClick(View view) {
+            callback.onCategorySelected(categoryVM);
         }
     }
 }

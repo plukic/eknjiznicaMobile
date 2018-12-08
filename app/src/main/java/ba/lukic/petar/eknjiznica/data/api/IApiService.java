@@ -62,4 +62,7 @@ public interface IApiService {
     Completable BuyBook(@Body List<BookOfferVM> bookOfferVMS);
     @GET("api/clients/books/my/books")
     Observable<List<ClientBookVM>> LoadMyBooks(@Query("bookName")String bookName);
+
+    @GET("api/books/category/{categoryId}")
+    Observable<List<BookOfferVM>> GetBooks(@Query("title") String title,@Query("categoryId") int categoryId);
 }

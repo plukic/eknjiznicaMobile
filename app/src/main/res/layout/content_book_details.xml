@@ -75,7 +75,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/book_image"
         app:layout_constraintTop_toBottomOf="@+id/tv_author"
-        tools:text="J.K. Rowling" />
+        tools:text="Roman" />
 
     <TextView
         android:id="@+id/tv_label_price"

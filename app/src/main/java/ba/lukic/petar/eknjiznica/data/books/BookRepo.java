@@ -79,4 +79,10 @@ public class BookRepo implements IBookRepo {
     public Observable<List<ClientBookVM>> LoadMyBooks(String bookName) {
         return apiService.LoadMyBooks(bookName);
     }
+
+    @Override
+    public Observable<List<BookOfferVM>> GetBooks(int categoryId, String title) {
+
+        return apiService.GetBooks(title,categoryId);
+    }
 }

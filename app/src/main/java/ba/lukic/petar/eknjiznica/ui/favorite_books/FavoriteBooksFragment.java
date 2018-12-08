@@ -93,7 +93,6 @@ public class FavoriteBooksFragment extends DaggerFragment implements FavoriteBoo
     @Override
     public void displayNoFavoriteBooks() {
         rvBook.setVisibility(View.GONE);
-        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.no_favorite_books, Snackbar.LENGTH_LONG).show();
 
     }
 

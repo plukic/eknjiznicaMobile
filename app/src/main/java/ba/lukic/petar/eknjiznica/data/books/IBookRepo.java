@@ -29,4 +29,6 @@ public interface IBookRepo {
     Completable BuyBooks(List<BookOfferVM> bookOfferVMS);
 
     Observable<List<ClientBookVM>> LoadMyBooks(String bookName);
+
+    Observable<List<BookOfferVM>> GetBooks(int categoryId, String title);
 }

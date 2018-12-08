@@ -8,6 +8,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -18,11 +19,14 @@ import com.bumptech.glide.request.RequestOptions;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.base.BaseDaggerAuthorizedActivity;
 import ba.lukic.petar.eknjiznica.model.book.BookOfferVM;
+import ba.lukic.petar.eknjiznica.model.category.CategoryVM;
 import ba.lukic.petar.eknjiznica.util.DialogFactory;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,11 +92,17 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
         tvBookPrice.setText(String.format("%s KM", book.Price));
         tvAuthor.setText(book.AuthorName);
         tvDescription.setText(book.Description);
-
+        tvBookCategories.setText(getCategories(book.Categories));
         Glide.with(this).load(book.ImageUrl).apply(new RequestOptions().error(android.R.color.white).placeholder(android.R.color.white)).into(bookImage);
         presenter.takeView(this);
 
         toggleShoppingCartIcon();
+    }
+
+    private String getCategories(List<CategoryVM> categories) {
+        if(categories.isEmpty())
+            return null;
+        return TextUtils.join(", ",categories);
     }
 
     private void toggleShoppingCartIcon() {

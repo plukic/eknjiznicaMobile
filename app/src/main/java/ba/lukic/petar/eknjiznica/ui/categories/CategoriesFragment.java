@@ -1,5 +1,6 @@
 package ba.lukic.petar.eknjiznica.ui.categories;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 
 import ba.lukic.petar.eknjiznica.R;
 import ba.lukic.petar.eknjiznica.model.category.CategoryVM;
+import ba.lukic.petar.eknjiznica.ui.category_books.CategoryBooksActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -38,6 +40,7 @@ public class CategoriesFragment extends DaggerFragment implements CategoriesAdap
 
     @Inject
     CategoriesContract.Presenter presenter;
+
     public CategoriesFragment() {
         // Required empty public constructor
     }
@@ -89,7 +92,11 @@ public class CategoriesFragment extends DaggerFragment implements CategoriesAdap
 
     @Override
     public void onCategorySelected(CategoryVM categoryVM) {
+        Context context = getActivity();
+        if (context == null)
+            return;
 
+        context.startActivity(CategoryBooksActivity.GetInstance(categoryVM, getContext()));
     }
 
     @Override

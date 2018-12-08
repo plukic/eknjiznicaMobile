@@ -5,6 +5,7 @@
     android:id="@+id/tv_category_name"
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="8dp"
+    android:textColor="?android:textColorPrimary"
     tools:text="Kategorija">
 
 </TextView>
