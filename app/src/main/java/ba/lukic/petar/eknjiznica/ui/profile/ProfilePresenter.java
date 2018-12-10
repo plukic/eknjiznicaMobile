@@ -9,14 +9,16 @@ import ba.lukic.petar.eknjiznica.model.user.ClientUpdateVM;
 import ba.lukic.petar.eknjiznica.util.BaseErrorFactory;
 import ba.lukic.petar.eknjiznica.util.ISchedulersProvider;
 import ba.lukic.petar.eknjiznica.util.MyRegex;
+import io.reactivex.ObservableSource;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 public class ProfilePresenter implements ProfileContract.Presenter {
-    MyRegex myRegex;
-    IAccountRepo accountRepo;
-    BaseErrorFactory baseErrorFactory;
-    ISchedulersProvider schedulersProvider;
-    EventBus eventBus;
+    private MyRegex myRegex;
+    private IAccountRepo accountRepo;
+    private BaseErrorFactory baseErrorFactory;
+    private ISchedulersProvider schedulersProvider;
+    private EventBus eventBus;
 
     @Inject
     public ProfilePresenter(MyRegex myRegex, IAccountRepo accountRepo, BaseErrorFactory baseErrorFactory, ISchedulersProvider schedulersProvider, EventBus eventBus) {
@@ -78,23 +80,22 @@ public class ProfilePresenter implements ProfileContract.Presenter {
         clientUpdateVM.PhoneNumber = phoneNumber;
 
 
-        compositeDisposable.add(
-                accountRepo.updateUser(clientUpdateVM)
-                        .toObservable()
-                        .flatMap(o -> accountRepo.loadUserProfileInfo())
-                        .subscribeOn(schedulersProvider.network())
-                        .observeOn(schedulersProvider.main())
-                        .doOnSubscribe(disposable -> view.displayLoading(true))
-                        .subscribe((clientsDetailsModel) -> {
-                            view.displayLoading(false);
-                            view.displayUpdateSuccessfully();
-                            eventBus.post(clientsDetailsModel);
+        Disposable profile_update = accountRepo.updateUser(clientUpdateVM)
+                .subscribeOn(schedulersProvider.network())
+                .observeOn(schedulersProvider.main())
+                .andThen(accountRepo.loadUserProfileInfo())
+                .doOnSubscribe(disposable -> view.displayLoading(true))
+                .subscribe((clientsDetailsModel) -> {
+                    view.displayLoading(false);
+                    view.displayUpdateSuccessfully();
+                    eventBus.post(clientsDetailsModel);
 
-                        }, throwable -> {
-                            view.displayLoading(false);
-                            String error = baseErrorFactory.parseSingleError(throwable, "profile_update");
-                            view.displayError(error);
-                        }));
+                }, throwable -> {
+                    view.displayLoading(false);
+                    String error = baseErrorFactory.parseSingleError(throwable, "profile_update");
+                    view.displayError(error);
+                });
+        compositeDisposable.add(profile_update);
 
     }
 
@@ -111,7 +112,7 @@ public class ProfilePresenter implements ProfileContract.Presenter {
 
     @Override
     public void onStart() {
-
+        compositeDisposable=new CompositeDisposable();
     }
 
     @Override

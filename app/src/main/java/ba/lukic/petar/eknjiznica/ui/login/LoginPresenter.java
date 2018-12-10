@@ -23,7 +23,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     @Inject
     BaseErrorFactory baseErrorFactory;
 
-    CompositeDisposable compositeDisposable=new CompositeDisposable();
+    private CompositeDisposable compositeDisposable=new CompositeDisposable();
 
     @Inject
     public LoginPresenter(MyRegex myRegex, IAccountRepo accountRepo, ISchedulersProvider schedulersProvider, BaseErrorFactory baseErrorFactory) {
@@ -84,7 +84,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void onStart() {
-
+compositeDisposable=new CompositeDisposable();
     }
 
     @Override

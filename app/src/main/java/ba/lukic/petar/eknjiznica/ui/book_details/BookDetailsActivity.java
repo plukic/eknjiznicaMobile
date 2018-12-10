@@ -102,7 +102,11 @@ public class BookDetailsActivity extends BaseDaggerAuthorizedActivity implements
     private String getCategories(List<CategoryVM> categories) {
         if(categories.isEmpty())
             return null;
-        return TextUtils.join(", ",categories);
+        StringBuilder text= new StringBuilder();
+        for (CategoryVM categoryVM:categories) {
+            text.append(String.format("%s ", categoryVM.CategoryName));
+        }
+        return text.toString();
     }
 
     private void toggleShoppingCartIcon() {

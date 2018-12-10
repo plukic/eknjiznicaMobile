@@ -33,7 +33,7 @@ android {
         }
         prod {
             dimension "mode"
-            buildConfigField("String", "BASE_URL", "\"http://romeo.ito.ba/coa/\"")
+            buildConfigField("String", "BASE_URL", "\"http://plukic1996-001-site1.itempurl.com/\"")
         }
     }
     compileOptions {

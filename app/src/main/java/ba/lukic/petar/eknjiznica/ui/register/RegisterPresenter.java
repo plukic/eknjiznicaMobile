@@ -114,7 +114,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
 
     @Override
     public void onStart() {
-
+        compositeDisposable=new CompositeDisposable();
     }
 
     @Override
